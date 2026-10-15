@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="横浜市の中学3年生向け。併願・単願・オープン・推薦を切り替えて、2027年の高校受験の日程とやることを確認できるチェックリスト。">
+<meta name="theme-color" content="#f7f8fb">
+<title>横浜 高校受験ノート 2027</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700&family=M+PLUS+1p:wght@400;500;700&display=swap">
+<style>
+/* Layout: 1カラムの手帳。受験方式を選ぶと、その方式のやることだけが並ぶ */
+:root{
+  --bg:#f7f8fb; --surface:#ffffff; --fg:#1f2430; --muted:#6a7180; --line:#e1e5ee;
+  --accent:#2f6fd6; --accent-soft:#e3ecfb; --pub:#1f8a6b; --pub-soft:#dff2ea; --priv:#c0527a; --priv-soft:#fae4ec;
+  --key:#1f2430; --keyfg:#fff; --done:#9aa0ab;
+  --display:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Hiragino Sans",sans-serif;
+  --body:"M PLUS 1p","Hiragino Sans","Noto Sans JP",sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#161a22; --surface:#1f2430; --fg:#edf0f6; --muted:#a3abba; --line:#323948;
+  --accent:#7aa7f0; --accent-soft:#25324a; --pub:#5cc7a4; --pub-soft:#1f3a33; --priv:#ec8db0; --priv-soft:#40283a;
+  --key:#edf0f6; --keyfg:#161a22; --done:#6f7787; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#161a22; --surface:#1f2430; --fg:#edf0f6; --muted:#a3abba; --line:#323948;
+  --accent:#7aa7f0; --accent-soft:#25324a; --pub:#5cc7a4; --pub-soft:#1f3a33; --priv:#ec8db0; --priv-soft:#40283a;
+  --key:#edf0f6; --keyfg:#161a22; --done:#6f7787; color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 48px}
+.wrap{max-width:660px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+h1{font-family:var(--display);font-size:1.6rem;margin:0;line-height:1.3;text-wrap:balance}
+.sub{color:var(--muted);font-size:.85rem;margin:4px 0 0}
+.modes{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.modes button{font:inherit;font-size:.9rem;font-weight:700;border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:10px;padding:10px 4px;cursor:pointer;font-family:var(--display)}
+.modes button[aria-pressed="true"]{background:var(--key);color:var(--keyfg);border-color:var(--key)}
+.desc{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:.88rem}
+.desc b{font-family:var(--display)}
+.desc .route{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{display:inline-block;white-space:nowrap;font-size:.72rem;line-height:1.5;border-radius:999px;padding:1px 9px;font-weight:500}
+.chip.pub{background:var(--pub-soft);color:var(--pub)}
+.chip.priv{background:var(--priv-soft);color:var(--priv)}
+.chip.sch{background:var(--accent-soft);color:var(--accent)}
+.count{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.count div{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;min-width:0}
+.count b{display:block;font-family:var(--display);font-size:1.35rem;font-variant-numeric:tabular-nums;line-height:1.2}
+.count span{font-size:.72rem;color:var(--muted)}
+.count .main{background:var(--accent-soft);border-color:transparent}
+.count .main b{color:var(--accent)}
+.prog{display:flex;align-items:center;gap:10px;font-size:.85rem;color:var(--muted)}
+.bar{flex:1;height:6px;background:var(--line);border-radius:3px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+.tools{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.tools button{font:inherit;font-size:.82rem;border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:999px;padding:3px 12px;cursor:pointer}
+.tools button[aria-pressed="true"]{background:var(--key);color:var(--keyfg);border-color:var(--key)}
+section h2{font-family:var(--display);font-size:1.05rem;margin:0 0 8px;display:flex;align-items:baseline;gap:8px}
+section h2 small{font-family:var(--body);font-weight:400;font-size:.78rem;color:var(--muted)}
+ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+li label{display:grid;grid-template-columns:22px 70px 1fr;gap:8px;align-items:start;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer}
+li input{width:18px;height:18px;margin:2px 0 0;accent-color:var(--accent)}
+li .d{font-variant-numeric:tabular-nums;font-size:.8rem;color:var(--muted);padding-top:1px}
+li .t{min-width:0}
+li .t em{display:block;font-style:normal;font-size:.78rem;color:var(--muted)}
+li .chip{margin-left:6px;vertical-align:1px}
+li.key label{border-color:var(--accent)}
+li input:checked ~ .t{color:var(--done);text-decoration:line-through}
+li input:checked ~ .t em,li input:checked ~ .t .chip{text-decoration:none}
+input:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.terms{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:.84rem}
+.terms h2{font-family:var(--display);font-size:1rem;margin:0 0 6px}
+.terms dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
+.terms dt{font-weight:700;white-space:nowrap}
+.terms dd{margin:0;color:var(--muted);min-width:0}
+.note{font-size:.76rem;color:var(--muted);border-top:1px solid var(--line);padding-top:12px;margin:0}
+@media (max-width:420px){.modes button{font-size:.82rem}li label{grid-template-columns:22px 1fr}li .d,li .t{grid-column:2}.count b{font-size:1.1rem}}
+@media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>横浜 高校受験ノート 2027</h1>
+    <p class="sub">2027年春に受験する横浜市の中学3年生と保護者向け／神奈川県の公立・私立</p>
+  </header>
+
+  <div class="modes" role="group" aria-label="受け方を選ぶ">
+    <button id="m-heigan" data-m="heigan">併願</button>
+    <button id="m-tangan" data-m="tangan">単願</button>
+    <button id="m-open" data-m="open">オープン</button>
+    <button id="m-suisen" data-m="suisen">推薦</button>
+  </div>
+
+  <div class="desc" id="desc"></div>
+
+  <div class="count" id="count"></div>
+
+  <div class="prog"><span id="pt">0 / 0 完了</span><div class="bar"><i id="pb"></i></div></div>
+
+  <div class="tools" role="group" aria-label="表示">
+    <button id="f-all" aria-pressed="true">すべて</button>
+    <button id="f-open" aria-pressed="false">未完了だけ</button>
+  </div>
+
+  <div id="list"></div>
+
+  <div class="terms">
+    <h2>ことばの意味</h2>
+    <dl>
+      <dt>併願</dt><dd>公立が第一志望。私立を「すべり止め」として受ける。多くは書類選考で、公立の発表まで手続きを待ってもらえる。</dd>
+      <dt>単願</dt><dd>その私立が第一志望。合格したら必ず入学する約束で、一般入試で受ける。</dd>
+      <dt>オープン</dt><dd>内申の基準なしで、当日の試験の点で決まる私立入試。併願の確約が取れないときや、上の学校に挑戦するときに使う。</dd>
+      <dt>推薦</dt><dd>私立の推薦入試。中学校の推薦をもらい、合格したら入学する。1月下旬に決まるのがいちばん早い。</dd>
+      <dt>入試相談</dt><dd>12月中旬から、中学校の先生が私立高校と事前に相談する仕組み。推薦・単願・併願の確約はここで決まる。</dd>
+    </dl>
+  </div>
+
+  <p class="note">公立の日程は神奈川県教育委員会の発表（令和9年度入学者選抜）にもとづいています。私立の日程は神奈川県の私立高校で一般的な時期です。出願期間・試験日・手続き締切は学校ごとに違うので、必ず志望校の募集要項で確認してください。中学校の面談の日程は学校ごとに違います。チェックはこの端末のブラウザにだけ保存されます。</p>
+</div>
+
+<script>
+// k:1 = 重要 / tag: pub=公立 priv=私立 sch=中学校
+const COMMON_FALL=[
+ {p:"10月",s:"候補を集める",i:[
+  ["10月中","公立・私立の学校説明会に行く","人気校は予約開始すぐに埋まるので、予約日をメモ","sch"],
+  ["10月中","進路面談・三者面談の日程を確認","面談で私立の候補を話すので、説明会はその前に","sch"],
+ ]},
+ {p:"11月",s:"内申を固める",i:[
+  ["11月中","2学期の期末試験","調査書（内申）に入る最後の定期テスト","sch",1],
+  ["11月中","志望校の募集要項を取り寄せる","出願方法・内申の基準・手続き締切を確認","priv"],
+ ]},
+];
+const DEC={
+ heigan:["公立の志望校と私立の併願校を決める","三者面談で決める学校が多い"],
+ tangan:["単願で受ける私立を決める","合格したら入学する約束なので、親子でよく話し合う"],
+ open:["オープンで受ける私立と、公立の志望校を決める","オープンは確約がないので、併願校も一緒に考える"],
+ suisen:["推薦で受ける私立を決める","中学校の推薦基準（内申）を満たしているか先生に確認"],
+};
+const PUB=[
+ ["1/25-1/29","公立 ネット出願（志願情報の入力）","中学校長の承認は2/1まで","pub",1],
+ ["2/4-2/8","公立 志願変更（必要な人だけ）","中学校長の承認は2/9まで","pub"],
+ ["2/16","公立 学力検査","5教科","pub",1],
+ ["2/16-2/18","公立 特色検査・面接","志望校が指定する日","pub"],
+ ["2/26","公立 合格発表","合格したら入学手続き。不合格なら私立の手続きへ","pub",1],
+];
+const MODES={
+ heigan:{name:"併願",lead:"公立が第一志望。私立の併願（すべり止め）を確保して公立に挑戦します。",route:[["私立 併願","priv"],["公立 共通選抜","pub"]],
+  count:[["公立 学力検査",2027,2,16,1],["私立 一般入試",2027,2,10],["公立 合格発表",2027,2,26]],
+  plan:[
+   {p:"12月",s:"確約を取る",i:[
+    ["12月中旬〜","中学校と私立の入試相談","併願の確約が取れたか先生に確認","sch",1],
+    ["12月中","ネット出願の準備","顔写真データ・メールアドレス・受検料の支払い方法","pub"],
+   ]},
+   {p:"1月",s:"出願",i:[
+    ["1月下旬〜","私立 併願の出願","書類選考の学校は調査書を提出するだけのことも","priv",1],
+    PUB[0],
+   ]},
+   {p:"2月",s:"本番",i:[
+    ["2/10〜","私立 併願の試験・書類選考","書類選考なら試験なし","priv"],
+    ["2/11頃〜","私立 併願の合格発表","手続き締切と、公立発表まで延納できるか確認","priv",1],
+    PUB[1],PUB[2],PUB[3],PUB[4],
+    ["2/26以降","私立の入学手続き（公立不合格のとき）","延納の締切までに","priv"],
+   ]},
+  ]},
+ tangan:{name:"単願",lead:"その私立が第一志望。一般入試で受け、合格したら入学します。公立は受けません。",route:[["私立 単願（一般）","priv"]],
+  count:[["私立 一般入試",2027,2,10,1],["私立 合格発表",2027,2,11],["公立 学力検査",2027,2,16]],
+  plan:[
+   {p:"12月",s:"確約を取る",i:[
+    ["12月中旬〜","中学校と私立の入試相談","単願の確約が取れたか先生に確認","sch",1],
+   ]},
+   {p:"1月",s:"出願",i:[
+    ["1月下旬〜","私立 単願（一般）の出願","ネット出願の学校が多い","priv",1],
+   ]},
+   {p:"2月",s:"本番",i:[
+    ["2/10〜","私立 一般入試（単願）","筆記・面接など学校ごと","priv",1],
+    ["2/11頃〜","私立 合格発表",null,"priv",1],
+    ["発表後すぐ","入学手続き・入学金の支払い","単願は締切が早いので注意","priv",1],
+   ]},
+  ]},
+ open:{name:"オープン",lead:"内申の基準なし、当日の点数で決まる私立入試。公立と組み合わせることが多いです。",route:[["私立 オープン","priv"],["公立 共通選抜","pub"]],
+  count:[["私立 オープン入試",2027,2,10,1],["公立 学力検査",2027,2,16],["公立 合格発表",2027,2,26]],
+  plan:[
+   {p:"12月",s:"受け方を決める",i:[
+    ["12月中","オープン入試の受験校を決める","確約がないので、合格できるかは当日次第","priv",1],
+    ["12月中","過去問・出題傾向を確認","オープンは当日の点数で決まる","priv"],
+    ["12月中","ネット出願の準備","顔写真データ・メールアドレス・受検料の支払い方法","pub"],
+   ]},
+   {p:"1月",s:"出願",i:[
+    ["1月下旬〜","私立 オープン入試の出願",null,"priv",1],
+    PUB[0],
+   ]},
+   {p:"2月",s:"本番",i:[
+    ["2/10〜","私立 オープン入試","学校によって試験日が複数あることも","priv",1],
+    ["2/11頃〜","私立 オープンの合格発表","手続き締切と延納の可否を確認","priv"],
+    PUB[1],PUB[2],PUB[3],PUB[4],
+   ]},
+  ]},
+ suisen:{name:"推薦",lead:"中学校の推薦で私立を受けます。合格したら入学。1月下旬に進路が決まります。",route:[["私立 推薦","priv"]],
+  count:[["私立 推薦入試",2027,1,22,1],["私立 一般入試",2027,2,10],["公立 学力検査",2027,2,16]],
+  plan:[
+   {p:"12月",s:"推薦をもらう",i:[
+    ["12月中旬〜","中学校と私立の入試相談","推薦の内定が出たか先生に確認","sch",1],
+    ["12月中","面接・作文の準備","志望理由を自分の言葉で言えるように","priv"],
+   ]},
+   {p:"1月",s:"出願と本番",i:[
+    ["1月中旬","私立 推薦の出願",null,"priv",1],
+    ["1/22〜","私立 推薦入試","面接・作文・適性検査など学校ごと","priv",1],
+    ["1/23頃〜","私立 推薦の合格発表",null,"priv",1],
+    ["発表後すぐ","入学手続き・入学金の支払い","推薦は締切が早いので注意","priv",1],
+   ]},
+  ]},
+};
+const SPRING={p:"3月",s:"卒業",i:[["3月上旬","中学校の卒業式",null,"sch"],["3月","高校の入学説明会・制服や教科書の購入",null,"priv"]]};
+const TAGN={pub:"公立",priv:"私立",sch:"中学校"};
+
+let mode="heigan";try{mode=localStorage.getItem("ykj-mode")||"heigan"}catch(e){}
+if(!MODES[mode])mode="heigan";
+let onlyOpen=false;
+function key(){return "ykj-done-"+mode}
+function load(){try{return JSON.parse(localStorage.getItem(key())||"{}")}catch(e){return {}}}
+function save(d){try{localStorage.setItem(key(),JSON.stringify(d))}catch(e){}}
+function days(y,m,d){const t=new Date();t.setHours(0,0,0,0);return Math.round((new Date(y,m-1,d)-t)/864e5)}
+function groups(){
+ const M=MODES[mode];
+ const fall=JSON.parse(JSON.stringify(COMMON_FALL));
+ const dec=DEC[mode];
+ const plan=M.plan.map(g=>({p:g.p,s:g.s,i:g.i.slice()}));
+ plan[0].i.push(["12月中",dec[0],dec[1],"sch",1]);
+ return [...fall,...plan,SPRING];
+}
+function render(){
+ const M=MODES[mode],done=load();
+ document.querySelectorAll(".modes button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.m===mode?"true":"false"));
+ document.getElementById("desc").innerHTML=`<b>${M.name}</b>　${M.lead}<div class="route">${M.route.map(r=>`<span class="chip ${r[1]}">${r[0]}</span>`).join("")}</div>`;
+ document.getElementById("count").innerHTML=M.count.map(c=>{const v=days(c[1],c[2],c[3]);const txt=v>0?`あと${v}日`:v===0?"今日":"終了";return `<div class="${c[4]?"main":""}"><b>${txt}</b><span>${c[0]} ${c[2]}/${c[3]}</span></div>`}).join("");
+ const L=document.getElementById("list");L.innerHTML="";let n=0,c=0;
+ groups().forEach((g,gi)=>{
+  const sec=document.createElement("section");sec.innerHTML=`<h2>${g.p}<small>${g.s}</small></h2>`;
+  const ul=document.createElement("ul");let shown=0;
+  g.i.forEach((it,ii)=>{
+   const id=`${mode}-${gi}-${ii}`;n++;if(done[id])c++;
+   if(onlyOpen&&done[id])return;shown++;
+   const li=document.createElement("li");if(it[4])li.className="key";
+   li.innerHTML=`<label><input type="checkbox" id="${id}" ${done[id]?"checked":""}><span class="d">${it[0]}</span><span class="t">${it[1]}<span class="chip ${it[3]}">${TAGN[it[3]]}</span>${it[2]?`<em>${it[2]}</em>`:""}</span></label>`;
+   li.querySelector("input").addEventListener("change",e=>{const d=load();d[id]=e.target.checked;save(d);render()});
+   ul.appendChild(li);
+  });
+  if(shown){sec.appendChild(ul);L.appendChild(sec)}
+ });
+ document.getElementById("pt").textContent=`${c} / ${n} 完了`;
+ document.getElementById("pb").style.width=(n?c/n*100:0)+"%";
+}
+document.querySelectorAll(".modes button").forEach(b=>b.addEventListener("click",()=>{mode=b.dataset.m;try{localStorage.setItem("ykj-mode",mode)}catch(e){}render()}));
+const fa=document.getElementById("f-all"),fo=document.getElementById("f-open");
+fa.onclick=()=>{onlyOpen=false;fa.setAttribute("aria-pressed","true");fo.setAttribute("aria-pressed","false");render()};
+fo.onclick=()=>{onlyOpen=true;fo.setAttribute("aria-pressed","true");fa.setAttribute("aria-pressed","false");render()};
+render();
+</script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="横浜市の中学3年生向け。併願・単願・オープン・推薦を切り替えて、2027年の高校受験の日程とやることを確認できるチェックリスト。">
+<meta name="description" content="横浜市の中学3年生向け。併願・単願・オープン・推薦に加え、定時制・通信制や特別募集も切り替えて、2027年の高校受験の日程とやることを確認できるチェックリスト。">
 <meta name="theme-color" content="#f7f8fb">
 <title>横浜 高校受験ノート 2027</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700&family=M+PLUS+1p:wght@400;500;700&display=swap">
@@ -37,6 +37,13 @@ h1{font-family:var(--display);font-size:1.6rem;margin:0;line-height:1.3;text-wra
 .desc{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:.88rem}
 .desc b{font-family:var(--display)}
 .desc .route{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.desc .who{margin:8px 0 0;padding-top:8px;border-top:1px dashed var(--line);font-size:.8rem;color:var(--muted)}
+.desc .who b{color:var(--fg);font-size:.8rem}
+.more{display:flex;flex-direction:column;gap:6px}
+.more p{margin:0;font-size:.78rem;color:var(--muted)}
+.modes2{display:flex;flex-wrap:wrap;gap:6px}
+.modes2 button{font:inherit;font-size:.8rem;font-weight:500;border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:999px;padding:5px 12px;cursor:pointer}
+.modes2 button[aria-pressed="true"]{background:var(--key);color:var(--keyfg);border-color:var(--key)}
 .chip{display:inline-block;white-space:nowrap;font-size:.72rem;line-height:1.5;border-radius:999px;padding:1px 9px;font-weight:500}
 .chip.pub{background:var(--pub-soft);color:var(--pub)}
 .chip.priv{background:var(--priv-soft);color:var(--priv)}
@@ -90,6 +97,17 @@ input:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline
     <button id="m-suisen" data-m="suisen">推薦</button>
   </div>
 
+  <div class="more">
+    <p>ほかの募集（定時制・通信制、特別募集）</p>
+    <div class="modes2" role="group" aria-label="ほかの募集を選ぶ">
+      <button data-m="teitsu">定時制・通信制</button>
+      <button data-m="kikoku">海外帰国生</button>
+      <button data-m="gaikoku">在県外国人等</button>
+      <button data-m="incl">インクルーシブ</button>
+      <button data-m="renkei">連携募集</button>
+    </div>
+  </div>
+
   <div class="desc" id="desc"></div>
 
   <div class="count" id="count"></div>
@@ -111,10 +129,13 @@ input:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline
       <dt>オープン</dt><dd>内申の基準なしで、当日の試験の点で決まる私立入試。併願の確約が取れないときや、上の学校に挑戦するときに使う。</dd>
       <dt>推薦</dt><dd>私立の推薦入試。中学校の推薦をもらい、合格したら入学する。1月下旬に決まるのがいちばん早い。</dd>
       <dt>入試相談</dt><dd>12月中旬から、中学校の先生が私立高校と事前に相談する仕組み。推薦・単願・併願の確約はここで決まる。</dd>
+      <dt>二次募集</dt><dd>2月の共通選抜で欠員が出た公立高校だけが3月に行う募集。紙の願書で出願し、英・国・数の3教科。</dd>
+      <dt>定通分割選抜</dt><dd>定時制・通信制が3月に行う2回目の募集（募集定員の20%）。二次募集と両方に出願できる。</dd>
+      <dt>特別募集</dt><dd>海外帰国生・在県外国人等・インクルーシブ・連携募集など。共通選抜と同じ日程で、条件を満たす人だけが受けられる。</dd>
     </dl>
   </div>
 
-  <p class="note">公立の日程は神奈川県教育委員会の発表（令和9年度入学者選抜）にもとづいています。私立の日程は神奈川県の私立高校で一般的な時期です。出願期間・試験日・手続き締切は学校ごとに違うので、必ず志望校の募集要項で確認してください。中学校の面談の日程は学校ごとに違います。チェックはこの端末のブラウザにだけ保存されます。</p>
+  <p class="note">公立の日程・志願資格は神奈川県教育委員会の発表（令和9年度入学者選抜・募集案内）にもとづいています。特別募集の必要書類と選考基準は「募集案内Ⅱ」で確認してください。私立の日程は神奈川県の私立高校で一般的な時期です。出願期間・試験日・手続き締切は学校ごとに違うので、必ず志望校の募集要項で確認してください。中学校の面談の日程は学校ごとに違います。チェックはこの端末のブラウザにだけ保存されます。</p>
 </div>
 
 <script>
@@ -134,14 +155,29 @@ const DEC={
  tangan:["単願で受ける私立を決める","合格したら入学する約束なので、親子でよく話し合う"],
  open:["オープンで受ける私立と、公立の志望校を決める","オープンは確約がないので、併願校も一緒に考える"],
  suisen:["推薦で受ける私立を決める","中学校の推薦基準（内申）を満たしているか先生に確認"],
+ teitsu:["定時制・通信制の志望校と課程を決める","昼間の定時制・夜間・通信制のどれが合うか、親子と先生で話し合う"],
+ kikoku:["受検する高校と、志願資格を満たすかを確認","帰国日・海外在住期間を先生に伝えておく"],
+ gaikoku:["受検する高校と、志願資格を満たすかを確認","入国してからの在留期間（通算6年以内）を確認"],
+ incl:["インクルーシブ教育実践推進校の志望校を決める","学校見学や個別相談で、学習や生活の様子を確認"],
+ renkei:["連携募集で受けるかを決める","在籍する連携型中学校の校長の推薦が必要"],
 };
 const PUB=[
- ["1/25-1/29","公立 ネット出願（志願情報の入力）","中学校長の承認は2/1まで","pub",1],
- ["2/4-2/8","公立 志願変更（必要な人だけ）","中学校長の承認は2/9まで","pub"],
- ["2/16","公立 学力検査","5教科","pub",1],
- ["2/16-2/18","公立 特色検査・面接","志望校が指定する日","pub"],
- ["2/26","公立 合格発表","合格したら入学手続き。不合格なら私立の手続きへ","pub",1],
+ ["1/25-1/29","公立 ネット出願（志願情報の入力）","中学校長の承認は1/25〜2/1。この期間は志願を取り消せない","pub",1],
+ ["2/4-2/8","公立 志願変更（必要な人だけ）","1回だけ。中学校長の承認は2/9まで","pub"],
+ ["2/16","公立 学力検査","5教科（クリエイティブスクールは学力検査なし・面接）","pub",1],
+ ["2/16-2/18","公立 特色検査・面接","志望校が指定する日（一部の学校は2/19もあり）","pub"],
+ ["2/26","公立 合格発表","9時〜 高校の窓口で合格通知書を受け取る。不合格なら私立の手続きか二次募集へ","pub",1],
 ];
+// 3月 公立二次募集（共通選抜・インクルーシブ）
+const NIJI=[
+ ["3/2-3/3","（必要なら）公立 二次募集の出願","欠員がある学校のみ。紙の願書を直接提出。国公私立に合格している人は出願できない","pub"],
+ ["3/4-3/5","（必要なら）二次募集の志願変更","1回だけ。定通分割選抜（3/4-3/5出願）にも同時に出願できる","pub"],
+ ["3/9","（必要なら）二次募集の学力検査","英・国・数の3教科。面接がある学校も","pub"],
+ ["3/12","（必要なら）二次募集の合格発表","時間は学校ごと。高校の窓口で","pub"],
+];
+const GRAD=["3月上旬","中学校の卒業式",null,"sch"];
+const NYUGAKU=["3月","高校の入学説明会・制服や教科書の購入",null,"pub"];
+const NO_NIJI="この募集は二次募集がない。不合格のときの進路も先生と相談しておく";
 const MODES={
  heigan:{name:"併願",lead:"公立が第一志望。私立の併願（すべり止め）を確保して公立に挑戦します。",route:[["私立 併願","priv"],["公立 共通選抜","pub"]],
   count:[["公立 学力検査",2027,2,16,1],["私立 一般入試",2027,2,10],["公立 合格発表",2027,2,26]],
@@ -208,8 +244,110 @@ const MODES={
     ["発表後すぐ","入学手続き・入学金の支払い","推薦は締切が早いので注意","priv",1],
    ]},
   ]},
+ teitsu:{name:"定時制・通信制",lead:"定時制（昼間・夜間）と通信制で学ぶ道。2月の共通選抜（ネット出願）と、3月の定通分割選抜（紙の出願）の2回チャンスがあります。",route:[["共通選抜（2月）","pub"],["定通分割選抜（3月）","pub"]],
+  who:"<b>昼間の定時制</b>：県立横浜明朋・県立川崎・県立厚木清南・県立相模向陽館・横浜市立横浜総合・川崎市立川崎／<b>通信制</b>：県立横浜修悠館・県立厚木清南。在県外国人等特別募集は昼間の定時制でも行います。",
+  count:[["共通選抜 検査",2027,2,16,1],["共通選抜 発表",2027,2,26],["定通分割 検査",2027,3,15]],
+  plan:[
+   {p:"12月",s:"課程を決める",i:[
+    ["12月中","ネット出願の準備","顔写真データ・メールアドレス・受検料の支払い方法","pub"],
+   ]},
+   {p:"1月",s:"出願",i:[PUB[0]]},
+   {p:"2月",s:"共通選抜",i:[
+    ["2/4-2/8","公立 志願変更（必要な人だけ）","1回だけ。全日制⇔定時制など、課程をまたいでも変更できる。校長承認は2/9まで","pub"],
+    ["2/16","定時制：学力検査",null,"pub",1],
+    ["2/16-2/18","定時制：特色検査／通信制：作文","高校が指定する日","pub",1],
+    ["2/26","合格発表","9時〜 高校の窓口で。不合格なら3月の定通分割選抜へ","pub",1],
+   ]},
+  ],
+  march:[
+   ["3/4-3/5","（必要なら）定通分割選抜の出願","紙の願書を直接提出。募集は定員の20%（共通選抜の欠員分も加える）。国公私立に合格している人は出願できない","pub",1],
+   ["3/8","定通分割選抜の志願変更","1回だけ。課程をまたいでも変更できる","pub"],
+   GRAD,
+   ["3/15","定時制：学力検査（英・国・数）","共通選抜の第1次選考と同じ方法で数値を出して選考","pub",1],
+   ["3/15-3/16","定時制：特色検査／通信制：作文","実技・自己表現・面接を行う学校も。日は高校が指定","pub"],
+   ["3/19","定通分割選抜の合格発表","時間は課程ごと。高校の窓口で","pub",1],
+   NYUGAKU,
+  ]},
+ kikoku:{name:"海外帰国生特別募集",lead:"海外から帰国した生徒のための全日制の募集。学力検査（英・国・数）・作文・面接で選考します。",route:[["特別募集（2月）","pub"]],
+  who:"<b>志願資格</b>：全日制の志願資格を満たし、日本国籍があり、保護者と一緒に続けて2年以上外国に住み、帰国日が2024年（令和6年）3月1日以降の人。",
+  count:[["資格確認 締切",2027,1,15,1],["学力検査",2027,2,16],["合格発表",2027,2,26]],
+  plan:[
+   {p:"12月",s:"書類をそろえる",i:[
+    ["12月中","志願資格を確かめる書類をそろえる","海外在住期間・帰国日がわかるもの。詳細は「募集案内Ⅱ」で確認","pub"],
+    ["12月中","ネット出願の準備","顔写真データ・メールアドレス・受検料の支払い方法","pub"],
+   ]},
+   {p:"1月",s:"資格確認と出願",i:[
+    ["1/6-1/15","志願資格の確認","志願予定の高校の窓口で手続き。これをしないと出願できない","pub",1],
+    PUB[0],
+   ]},
+   {p:"2月",s:"本番",i:[
+    PUB[1],
+    ["2/16","学力検査（英・国・数）・作文・面接","県立横浜国際の国際バカロレアコースは自己表現検査も","pub",1],
+    ["2/26","合格発表","9時〜 高校の窓口で。"+NO_NIJI,"pub",1],
+   ]},
+  ],
+  march:[GRAD,NYUGAKU],
+  after:[{p:"7月",s:"後期募集（該当者のみ）",i:[
+   ["7/23-7/27","後期募集の出願：県立神奈川総合","帰国日が2024年（令和6年）9月1日以降の人。紙の願書","pub"],
+   ["7/29","後期募集の学力検査など",null,"pub"],
+   ["8/3","後期募集の合格発表",null,"pub"],
+  ]}]},
+ gaikoku:{name:"在県外国人等特別募集",lead:"外国籍などで日本に来てからの期間が短い生徒のための募集。全日制と昼間の定時制で行い、学力検査（英・国・数）と面接で選考します。",route:[["特別募集（2月）","pub"]],
+  who:"<b>志願資格</b>：外国籍の人（難民と認定された人を含む）、または日本国籍を取って6年以内の人で、入国後の在留期間が通算6年以内（2027年2月1日現在。小学1年以降で計算）の人。",
+  count:[["資格確認 締切",2027,1,15,1],["学力検査",2027,2,16],["合格発表",2027,2,26]],
+  plan:[
+   {p:"12月",s:"書類をそろえる",i:[
+    ["12月中","志願資格を確かめる書類をそろえる","在留期間がわかるもの。詳細は「募集案内Ⅱ」で確認","pub"],
+    ["12月中","ネット出願の準備","顔写真データ・メールアドレス・受検料の支払い方法","pub"],
+   ]},
+   {p:"1月",s:"資格確認と出願",i:[
+    ["1/6-1/15","志願資格の確認","志願予定の高校の窓口で手続き。これをしないと出願できない","pub",1],
+    PUB[0],
+   ]},
+   {p:"2月",s:"本番",i:[
+    PUB[1],
+    ["2/16","学力検査（英・国・数）・面接",null,"pub",1],
+    ["2/26","合格発表","9時〜 高校の窓口で。"+NO_NIJI,"pub",1],
+   ]},
+  ],
+  march:[GRAD,NYUGAKU]},
+ incl:{name:"インクルーシブ教育実践推進校特別募集",lead:"インクルーシブ教育実践推進校で、知的障害のある生徒がほかの生徒と一緒に学ぶための募集。検査は面接です。",route:[["特別募集（2月）","pub"],["二次募集（3月）","pub"]],
+  who:"<b>志願資格</b>：全日制の志願資格を満たし、知的障害があって、高校での学習や生活について理解し、入学したい気持ちのある人。",
+  count:[["面接",2027,2,16,1],["合格発表",2027,2,26],["二次募集 検査",2027,3,9]],
+  plan:[
+   {p:"12月",s:"志望校を決める",i:[
+    ["12月中","ネット出願の準備","顔写真データ・メールアドレス・受検料の支払い方法","pub"],
+   ]},
+   {p:"1月",s:"出願",i:[PUB[0]]},
+   {p:"2月",s:"本番",i:[
+    PUB[1],
+    ["2/16-2/18","面接","志望校が指定する日","pub",1],
+    PUB[4],
+   ]},
+  ],
+  march:[NIJI[0],NIJI[1],GRAD,["3/9","（必要なら）二次募集の検査","面接など。内容は学校ごと","pub"],NIJI[3],NYUGAKU]},
+ renkei:{name:"連携募集",lead:"連携型中高一貫教育校の募集。連携している中学校の校長の推薦を受けた人が受けられます。",route:[["連携募集（2月）","pub"]],
+  who:"<b>対象</b>：県立愛川高校（愛川町立の各中学校）、県立光陵高校（横浜国立大学附属横浜中学校）。全日制の志願資格を満たし、在籍する連携型中学校の校長の推薦を得た人。",
+  count:[["検査",2027,2,16,1],["合格発表",2027,2,26],["出願開始",2027,1,25]],
+  plan:[
+   {p:"12月",s:"推薦を受ける",i:[
+    ["12月中","中学校長の推薦を受ける","推薦の手続きと時期は中学校に確認","sch",1],
+    ["12月中","ネット出願の準備","顔写真データ・メールアドレス・受検料の支払い方法","pub"],
+   ]},
+   {p:"1月",s:"出願",i:[PUB[0]]},
+   {p:"2月",s:"本番",i:[
+    ["2/4-2/8","（連携募集は志願変更できない）","ほかの公立に変えることはできないので、出願前によく確認","pub"],
+    ["2/16〜","検査","内容は「募集案内Ⅱ」の選考基準で確認","pub",1],
+    ["2/26","合格発表","9時〜 高校の窓口で。"+NO_NIJI,"pub",1],
+   ]},
+  ],
+  march:[GRAD,NYUGAKU]},
 };
-const SPRING={p:"3月",s:"卒業",i:[["3月上旬","中学校の卒業式",null,"sch"],["3月","高校の入学説明会・制服や教科書の購入",null,"priv"]]};
+MODES.heigan.march=[NIJI[0],NIJI[1],GRAD,NIJI[2],NIJI[3],NYUGAKU];
+MODES.open.march=[NIJI[0],NIJI[1],GRAD,NIJI[2],NIJI[3],NYUGAKU];
+MODES.tangan.march=[GRAD,["3月","高校の入学説明会・制服や教科書の購入",null,"priv"]];
+MODES.suisen.march=MODES.tangan.march;
+const MARCH_S={heigan:"卒業・二次募集",open:"卒業・二次募集",incl:"卒業・二次募集",teitsu:"卒業・定通分割選抜"};
 const TAGN={pub:"公立",priv:"私立",sch:"中学校"};
 
 let mode="heigan";try{mode=localStorage.getItem("ykj-mode")||"heigan"}catch(e){}
@@ -225,12 +363,13 @@ function groups(){
  const dec=DEC[mode];
  const plan=M.plan.map(g=>({p:g.p,s:g.s,i:g.i.slice()}));
  plan[0].i.push(["12月中",dec[0],dec[1],"sch",1]);
- return [...fall,...plan,SPRING];
+ const march={p:"3月",s:MARCH_S[mode]||"卒業",i:M.march};
+ return [...fall,...plan,march,...(M.after||[])];
 }
 function render(){
  const M=MODES[mode],done=load();
- document.querySelectorAll(".modes button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.m===mode?"true":"false"));
- document.getElementById("desc").innerHTML=`<b>${M.name}</b>　${M.lead}<div class="route">${M.route.map(r=>`<span class="chip ${r[1]}">${r[0]}</span>`).join("")}</div>`;
+ document.querySelectorAll("button[data-m]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.m===mode?"true":"false"));
+ document.getElementById("desc").innerHTML=`<b>${M.name}</b>　${M.lead}<div class="route">${M.route.map(r=>`<span class="chip ${r[1]}">${r[0]}</span>`).join("")}</div>${M.who?`<p class="who">${M.who}</p>`:""}`;
  document.getElementById("count").innerHTML=M.count.map(c=>{const v=days(c[1],c[2],c[3]);const txt=v>0?`あと${v}日`:v===0?"今日":"終了";return `<div class="${c[4]?"main":""}"><b>${txt}</b><span>${c[0]} ${c[2]}/${c[3]}</span></div>`}).join("");
  const L=document.getElementById("list");L.innerHTML="";let n=0,c=0;
  groups().forEach((g,gi)=>{
@@ -249,7 +388,7 @@ function render(){
  document.getElementById("pt").textContent=`${c} / ${n} 完了`;
  document.getElementById("pb").style.width=(n?c/n*100:0)+"%";
 }
-document.querySelectorAll(".modes button").forEach(b=>b.addEventListener("click",()=>{mode=b.dataset.m;try{localStorage.setItem("ykj-mode",mode)}catch(e){}render()}));
+document.querySelectorAll("button[data-m]").forEach(b=>b.addEventListener("click",()=>{mode=b.dataset.m;try{localStorage.setItem("ykj-mode",mode)}catch(e){}render()}));
 const fa=document.getElementById("f-all"),fo=document.getElementById("f-open");
 fa.onclick=()=>{onlyOpen=false;fa.setAttribute("aria-pressed","true");fo.setAttribute("aria-pressed","false");render()};
 fo.onclick=()=>{onlyOpen=true;fo.setAttribute("aria-pressed","true");fa.setAttribute("aria-pressed","false");render()};

@@ -343,8 +343,12 @@ const MODES={
   ],
   march:[GRAD,NYUGAKU]},
 };
-MODES.heigan.march=[NIJI[0],NIJI[1],GRAD,NIJI[2],NIJI[3],NYUGAKU];
-MODES.open.march=[NIJI[0],NIJI[1],GRAD,NIJI[2],NIJI[3],NYUGAKU];
+// 併願・オープンの3月：以前からある「卒業式」「入学説明会」は前の保存キー（3月の0番・1番）を引き継ぐ。
+// 二次募集は専用のキーで保存し、並べ替えてもチェックがずれないようにする。
+function keep(it,sid){const a=it.slice();a.sid=sid;return a}
+const MARCH_WITH_NIJI=()=>[keep(NIJI[0],"niji-0"),keep(NIJI[1],"niji-1"),keep(GRAD,"5-0"),keep(NIJI[2],"niji-2"),keep(NIJI[3],"niji-3"),keep(NYUGAKU,"5-1")];
+MODES.heigan.march=MARCH_WITH_NIJI();
+MODES.open.march=MARCH_WITH_NIJI();
 MODES.tangan.march=[GRAD,["3月","高校の入学説明会・制服や教科書の購入",null,"priv"]];
 MODES.suisen.march=MODES.tangan.march;
 const MARCH_S={heigan:"卒業・二次募集",open:"卒業・二次募集",incl:"卒業・二次募集",teitsu:"卒業・定通分割選抜"};
@@ -376,7 +380,7 @@ function render(){
   const sec=document.createElement("section");sec.innerHTML=`<h2>${g.p}<small>${g.s}</small></h2>`;
   const ul=document.createElement("ul");let shown=0;
   g.i.forEach((it,ii)=>{
-   const id=`${mode}-${gi}-${ii}`;n++;if(done[id])c++;
+   const id=it.sid?`${mode}-${it.sid}`:`${mode}-${gi}-${ii}`;n++;if(done[id])c++;
    if(onlyOpen&&done[id])return;shown++;
    const li=document.createElement("li");if(it[4])li.className="key";
    li.innerHTML=`<label><input type="checkbox" id="${id}" ${done[id]?"checked":""}><span class="d">${it[0]}</span><span class="t">${it[1]}<span class="chip ${it[3]}">${TAGN[it[3]]}</span>${it[2]?`<em>${it[2]}</em>`:""}</span></label>`;
